@@ -12,6 +12,7 @@ import javax.inject.Inject
 interface HomeRepository {
     suspend fun getAllData(): ArrayList<DisplayableItem>
     suspend fun login(code: String): Boolean
+    suspend fun logout()
 }
 
 class HomeRepositoryImpl @Inject constructor(
@@ -64,5 +65,9 @@ class HomeRepositoryImpl @Inject constructor(
     override suspend fun login(code: String): Boolean {
         preferences.isUserRegister = true
         return true
+    }
+
+    override suspend fun logout() {
+        preferences.isUserRegister = false
     }
 }

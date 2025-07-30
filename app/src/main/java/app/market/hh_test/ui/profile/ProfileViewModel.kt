@@ -1,13 +1,18 @@
 package app.market.hh_test.ui.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import app.market.hh_test.ui.auth.AuthUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProfileViewModel : ViewModel() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor(private val authUseCase: AuthUseCase) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
-    }
-    val text: LiveData<String> = _text
+   fun logout() {
+       viewModelScope.launch {
+           authUseCase.logout()
+       }
+   }
 }
