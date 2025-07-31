@@ -3,7 +3,6 @@
     <string name="title_main">Главная</string>
     <string name="title_favorites">Избранное</string>
     <string name="title_account">Аккаунт</string>
-    <string name="Login">Вход в личный кабинет</string>
     <string name="SearchWork">Поиск работы</string>
     <string name="Search">Поиск</string>
     <string name="Continue">Продолжить</string>
@@ -42,4 +41,25 @@
     <string name="Messages">Сообщения</string>
     <string name="Profile">Профиль</string>
     <string name="RepliedVacancies">%1$d вакансия</string>
+    <string name="Logout">Выйти</string>
+
+    <string name="CoursesInOneProject">Тысячи курсов \nв одном месте</string>
+    <string name="Register">Регистрация</string>
+    <string name="Login">Вход</string>
+    <string name="Email">Email</string>
+    <string name="Password">Пароль</string>
+    <string name="RewritePassword">Повторить пароль</string>
+    <string name="ExampleEmail">text@text.text</string>
+    <string name="EnterPassword">Введите пароль</string>
+    <string name="ReEnterPassword">Введите пароль ещё раз</string>
+    <string name="AlreadyHaveAccount">Уже есть аккаунт? <![CDATA[<span style="color:#12B956">Войти</span>]]></string>
+    <string name="NoAccount">Нету аккаунта? <![CDATA[<span style="color:#12B956">Регистрация</span>]]></string>
+    <string name="ForgotPassword">Забыл пароль</string>
+    <string name="odnaklassniki">odnaklassniki</string>
+    <string name="vkontakte">vkontakte</string>
+    <string name="Main">Главная</string>
+    <string name="Favorites">Избранное</string>
+    <string name="Account">Аккаунт</string>
+    <string name="search_courses">Search courses…</string>
+    <string name="ByDateAdded">По дате добавления</string>
 </resources>
