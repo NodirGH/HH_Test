@@ -22,6 +22,9 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
     private val _favorites = MutableLiveData<List<VacancyModel>>()
     val favorites: LiveData<List<VacancyModel>> = _favorites
 
+    init {
+        getCourses()
+    }
     fun getAllData() {
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -43,6 +46,14 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
             _favorites.postValue(favoriteList)
         }
 
+
+    }
+
+    fun getCourses() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val courses = homeUseCase.getCourses()
+            _displayableItem.postValue(courses)
+        }
 
     }
 }

@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 interface HomeUseCase {
     suspend fun getAllData(): ArrayList<DisplayableItem>
+    suspend fun getCourses(): ArrayList<DisplayableItem>
 }
 
 class HomeUseCaseImpl @Inject constructor(private val homeRepository: HomeRepository) :
@@ -13,5 +14,9 @@ class HomeUseCaseImpl @Inject constructor(private val homeRepository: HomeReposi
 
     override suspend fun getAllData():  ArrayList<DisplayableItem>  {
         return homeRepository.getAllData()
+    }
+
+    override suspend fun getCourses(): ArrayList<DisplayableItem> {
+        return homeRepository.getCourses()
     }
 }

@@ -1,7 +1,9 @@
 package app.market.data.repositories
 
+import app.market.data.home.AllCourseDto
 import app.market.data.home.AllHeadersModel
 import app.market.data.home.AllVacancyModel
+import app.market.data.home.CourseDto
 import app.market.data.home.HeadersModel
 import app.market.data.home.VacancyModel
 import app.market.data.local.AppPreferences
@@ -11,6 +13,7 @@ import javax.inject.Inject
 
 interface HomeRepository {
     suspend fun getAllData(): ArrayList<DisplayableItem>
+    suspend fun getCourses(): ArrayList<DisplayableItem>
     suspend fun login(code: String): Boolean
     suspend fun logout()
 }
@@ -20,7 +23,7 @@ class HomeRepositoryImpl @Inject constructor(
     private val preferences: AppPreferences
 ) : HomeRepository {
 
-    override suspend fun getAllData(): ArrayList<DisplayableItem>  {
+    override suspend fun getAllData(): ArrayList<DisplayableItem> {
         val allData = service.readMockDataFromAssets()
 
         val displayableItem = ArrayList<DisplayableItem>()
@@ -59,6 +62,27 @@ class HomeRepositoryImpl @Inject constructor(
         displayableItem.add(AllHeadersModel(header ?: emptyList()))
         displayableItem.add(AllVacancyModel(vacancies ?: emptyList()))
 
+        return displayableItem
+    }
+
+    override suspend fun getCourses(): ArrayList<DisplayableItem> {
+        val data = service.readCoursesFromAssets()
+
+        val displayableItem = ArrayList<DisplayableItem>()
+        val courses = data?.courses?.map { course ->
+            CourseDto(
+                id = course.id ?: 0,
+                title = course.title ?: "",
+                text = course.text ?: "",
+                price = course.price ?: "",
+                rate = course.rate ?: "",
+                startDate = course.startDate ?: "",
+                hasLike = course.hasLike ?: false,
+                publishDate = course.publishDate ?: "",
+            )
+        }
+
+        displayableItem.add(AllCourseDto(courses ?: emptyList()))
         return displayableItem
     }
 

@@ -1,5 +1,6 @@
 package app.market.hh_test.di
 
+import app.market.hh_test.ui.adapters.CoursesAdapter
 import app.market.hh_test.ui.adapters.HeaderAdapter
 import app.market.hh_test.ui.adapters.VacanciesAdapter
 import dagger.Module
@@ -13,6 +14,9 @@ object FragmentModule {
 
     @Provides
     fun provideVacanciesAdapter() = VacanciesAdapter()
+
+    @Provides
+    fun provideCoursesAdapter() = CoursesAdapter()
 
 //    @Provides
 //    fun provideQuestionsAdapter() = QuestionsAdapter()
