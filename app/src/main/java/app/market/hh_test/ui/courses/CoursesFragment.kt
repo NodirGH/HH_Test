@@ -1,4 +1,4 @@
-package app.market.hh_test.ui.home
+package app.market.hh_test.ui.courses
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), VacanciesAdapter.VacancyClickListener, CoursesAdapter.CourseClickListener {
+class CoursesFragment : Fragment(), VacanciesAdapter.VacancyClickListener, CoursesAdapter.CourseClickListener {
 
     @Inject
     lateinit var vacanciesAdapter: VacanciesAdapter
@@ -29,7 +29,7 @@ class HomeFragment : Fragment(), VacanciesAdapter.VacancyClickListener, CoursesA
     lateinit var coursesAdapter: CoursesAdapter
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val homeViewModel: HomeViewModel by activityViewModels()
+    private val coursesViewModel: CoursesViewModel by activityViewModels()
     private lateinit var mainAdapter: MainAdapter
 
     override fun onCreateView(
@@ -45,7 +45,7 @@ class HomeFragment : Fragment(), VacanciesAdapter.VacancyClickListener, CoursesA
         super.onViewCreated(view, savedInstanceState)
 
         mainAdapter = MainAdapter(vacanciesAdapter, coursesAdapter)
-        homeViewModel.getCourses()
+        coursesViewModel.getCourses()
         vacanciesAdapter.setOnVacancyCLickListener(this)
         coursesAdapter.setOnCourseCLickListener(this)
 
@@ -54,7 +54,7 @@ class HomeFragment : Fragment(), VacanciesAdapter.VacancyClickListener, CoursesA
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             itemAnimator = DefaultItemAnimator()
 
-            homeViewModel.displayableItem.observe(viewLifecycleOwner) {
+            coursesViewModel.displayableItem.observe(viewLifecycleOwner) {
                 mainAdapter.items = it
                 if (it.isNotEmpty()) {
                     mainAdapter.notifyDataSetChanged()
