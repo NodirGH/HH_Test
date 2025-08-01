@@ -2,8 +2,8 @@ package app.market.data.di
 
 import app.market.data.local.AppPreferences
 import app.market.data.remote.service.HomeService
-import app.market.data.repositories.HomeRepository
-import app.market.data.repositories.HomeRepositoryImpl
+import app.market.data.repositories.MainRepository
+import app.market.data.repositories.MainRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +19,7 @@ object RepositoryModule {
     fun provideHomeRepository(
      service: HomeService,
      preferences: AppPreferences
-    ): HomeRepository {
-        return HomeRepositoryImpl(service, preferences)
+    ): MainRepository {
+        return MainRepositoryImpl(service, preferences)
     }
  }

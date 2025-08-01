@@ -16,4 +16,16 @@
     <color name="dark_green">#015905</color>
     <color name="light_green">#4CB24E</color>
     <color name="grey">#858688</color>
+
+    <color name="MainWhite">#F2F2F3</color>
+    <color name="MainBlack">#151515</color>
+    <color name="MainGreen">#12B956</color>
+    <color name="LightGrey">#32333A</color>
+    <color name="Line">#4D555E</color>
+    <color name="LightGreyText">#9A9DAF</color>
+    <color name="Blue">#2683ED</color>
+    <color name="Orange">#F95D00</color>
+    <color name="ItemCourseBg">#24252A</color>
+    <color name="TransparentBg">#4D24252A</color>
+    <color name="MoreTransparentBg">#99333A4D</color>
 </resources>

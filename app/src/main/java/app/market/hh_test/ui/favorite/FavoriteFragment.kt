@@ -4,36 +4,57 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import app.market.data.home.CourseDto
 import app.market.hh_test.databinding.FragmentFavoriteBinding
+import app.market.hh_test.ui.adapters.CoursesAdapter
+import app.market.hh_test.ui.courses.CoursesViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class FavoriteFragment : Fragment() {
+@AndroidEntryPoint
+class FavoriteFragment : Fragment(), CoursesAdapter.CourseClickListener {
 
+    @Inject
+    lateinit var coursesAdapter: CoursesAdapter
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
+    private val coursesViewModel: CoursesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this)[DashboardViewModel::class.java]
-
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.rvFavoriteCourses.apply {
+            adapter = coursesAdapter
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            itemAnimator = DefaultItemAnimator()
+
+            coursesViewModel.favorites.observe(viewLifecycleOwner) { favorites ->
+                coursesAdapter.setItems(favorites)
+                coursesAdapter.notifyDataSetChanged()
+            }
         }
-        return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCourseClick(courseDto: CourseDto) {
+        //TODO
     }
 }

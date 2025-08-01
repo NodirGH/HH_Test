@@ -1,6 +1,7 @@
 package app.market.data.remote.service
 
 import android.content.Context
+import app.market.data.remote.responses.CoursesResponse
 import app.market.data.remote.responses.HHMockDataResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -22,6 +23,22 @@ class HomeService @Inject constructor(val context: Context){
             reader.close()
 
             mockData
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun readCoursesFromAssets(): CoursesResponse? {
+        return try {
+            val inputStream = context.assets.open("courses.json")
+            val reader = BufferedReader(InputStreamReader(inputStream))
+
+            val gson = Gson()
+            val type = object : TypeToken<CoursesResponse>() {}.type
+            val coursesData: CoursesResponse = gson.fromJson(reader, type)
+            reader.close()
+            coursesData
         } catch (e: Exception) {
             e.printStackTrace()
             null

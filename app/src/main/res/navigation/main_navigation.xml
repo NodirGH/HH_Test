@@ -7,9 +7,13 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="app.market.hh_test.ui.home.HomeFragment"
+        android:name="app.market.hh_test.ui.courses.CoursesFragment"
         android:label="@string/title_main"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_detailedVacancyFragment"
+            app:destination="@id/detailedVacancyFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/favoriteFragment"
@@ -21,5 +25,27 @@
         android:id="@+id/profileFragment"
         android:name="app.market.hh_test.ui.profile.ProfileFragment"
         android:label="@string/title_account"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedVacancyFragment"
+        android:name="app.market.hh_test.ui.detailed_vacancy.DetailedVacancyFragment"
+        android:label="fragment_detailed_vacancy"
+        tools:layout="@layout/fragment_detailed_vacancy" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="app.market.hh_test.ui.auth.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
