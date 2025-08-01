@@ -1,6 +1,6 @@
 package app.market.hh_test.ui.auth
 
-import app.market.data.repositories.HomeRepository
+import app.market.data.repositories.MainRepository
 import javax.inject.Inject
 
 interface AuthUseCase {
@@ -8,12 +8,12 @@ interface AuthUseCase {
     suspend fun logout()
 }
 
-class AuthUseCaseImpl @Inject constructor(private val homeRepository: HomeRepository): AuthUseCase {
+class AuthUseCaseImpl @Inject constructor(private val mainRepository: MainRepository): AuthUseCase {
     override suspend fun login(code: String): Boolean {
-        return homeRepository.login(code)
+        return mainRepository.login(code)
     }
 
     override suspend fun logout() {
-        homeRepository.logout()
+        mainRepository.logout()
     }
 }

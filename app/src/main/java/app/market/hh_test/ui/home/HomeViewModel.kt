@@ -2,19 +2,19 @@ package app.market.hh_test.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.market.data.home.AllVacancyModel
 import app.market.data.home.VacancyModel
 import app.market.data.local.DisplayableItem
-import app.market.hh_test.ui.usecases.HomeUseCase
+import app.market.hh_test.base.BaseViewModel
+import app.market.hh_test.ui.usecases.MainUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : ViewModel() {
+class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) : BaseViewModel() {
 
     private val _displayableItem = MutableLiveData<List<DisplayableItem>>()
     val displayableItem: LiveData<List<DisplayableItem>> = _displayableItem
@@ -25,10 +25,11 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
     init {
         getCourses()
     }
+
     fun getAllData() {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val allData = homeUseCase.getAllData()
+            val allData = mainUseCase.getAllData()
             _displayableItem.postValue(allData)
 
             val favoriteList: ArrayList<VacancyModel> = ArrayList()
@@ -50,8 +51,8 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
     }
 
     fun getCourses() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val courses = homeUseCase.getCourses()
+        vmScope.launch {
+            val courses = mainUseCase.getCourses()
             _displayableItem.postValue(courses)
         }
 

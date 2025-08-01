@@ -1,10 +1,10 @@
 package app.market.hh_test.di.domain
 
-import app.market.data.repositories.HomeRepository
+import app.market.data.repositories.MainRepository
 import app.market.hh_test.ui.auth.AuthUseCase
 import app.market.hh_test.ui.auth.AuthUseCaseImpl
-import app.market.hh_test.ui.usecases.HomeUseCase
-import app.market.hh_test.ui.usecases.HomeUseCaseImpl
+import app.market.hh_test.ui.usecases.MainUseCase
+import app.market.hh_test.ui.usecases.MainUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,15 +16,15 @@ object DomainModule {
 
     @Provides
     fun provideHomeUseCase(
-        homeRepository: HomeRepository
-    ): HomeUseCase {
-        return HomeUseCaseImpl(homeRepository)
+        mainRepository: MainRepository
+    ): MainUseCase {
+        return MainUseCaseImpl(mainRepository)
     }
 
     @Provides
     fun provideAuthUseCase(
-        homeRepository: HomeRepository
+        mainRepository: MainRepository
     ): AuthUseCase {
-        return AuthUseCaseImpl(homeRepository)
+        return AuthUseCaseImpl(mainRepository)
     }
 }

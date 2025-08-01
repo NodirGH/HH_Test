@@ -1,22 +1,22 @@
 package app.market.hh_test.ui.usecases
 
 import app.market.data.local.DisplayableItem
-import app.market.data.repositories.HomeRepository
+import app.market.data.repositories.MainRepository
 import javax.inject.Inject
 
-interface HomeUseCase {
+interface MainUseCase {
     suspend fun getAllData(): ArrayList<DisplayableItem>
     suspend fun getCourses(): ArrayList<DisplayableItem>
 }
 
-class HomeUseCaseImpl @Inject constructor(private val homeRepository: HomeRepository) :
-    HomeUseCase {
+class MainUseCaseImpl @Inject constructor(private val mainRepository: MainRepository) :
+    MainUseCase {
 
     override suspend fun getAllData():  ArrayList<DisplayableItem>  {
-        return homeRepository.getAllData()
+        return mainRepository.getAllData()
     }
 
     override suspend fun getCourses(): ArrayList<DisplayableItem> {
-        return homeRepository.getCourses()
+        return mainRepository.getCourses()
     }
 }

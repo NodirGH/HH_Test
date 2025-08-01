@@ -11,17 +11,17 @@ import app.market.data.local.DisplayableItem
 import app.market.data.remote.service.HomeService
 import javax.inject.Inject
 
-interface HomeRepository {
+interface MainRepository {
     suspend fun getAllData(): ArrayList<DisplayableItem>
     suspend fun getCourses(): ArrayList<DisplayableItem>
     suspend fun login(code: String): Boolean
     suspend fun logout()
 }
 
-class HomeRepositoryImpl @Inject constructor(
+class MainRepositoryImpl @Inject constructor(
     private val service: HomeService,
     private val preferences: AppPreferences
-) : HomeRepository {
+) : MainRepository {
 
     override suspend fun getAllData(): ArrayList<DisplayableItem> {
         val allData = service.readMockDataFromAssets()
