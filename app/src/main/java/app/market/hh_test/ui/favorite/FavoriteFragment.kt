@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +25,7 @@ class FavoriteFragment : Fragment(), CoursesAdapter.CourseClickListener {
     lateinit var coursesAdapter: CoursesAdapter
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
+    private val favoritesViewModel: FavoriteViewModel by viewModels()
     private val coursesViewModel: CoursesViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -37,12 +40,14 @@ class FavoriteFragment : Fragment(), CoursesAdapter.CourseClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        coursesAdapter.setOnCourseCLickListener(this)
+
         binding.rvFavoriteCourses.apply {
             adapter = coursesAdapter
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             itemAnimator = DefaultItemAnimator()
 
-            coursesViewModel.favorites.observe(viewLifecycleOwner) { favorites ->
+            favoritesViewModel.favorites.observe(viewLifecycleOwner) { favorites ->
                 coursesAdapter.setItems(favorites)
                 coursesAdapter.notifyDataSetChanged()
             }
@@ -55,6 +60,14 @@ class FavoriteFragment : Fragment(), CoursesAdapter.CourseClickListener {
     }
 
     override fun onCourseClick(courseDto: CourseDto) {
-        //TODO
+        Toast.makeText(requireContext(), "Course clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onAddCourseToFavorite(courseDto: CourseDto) {
+        favoritesViewModel.addFavoriteCourse(course = courseDto)
+    }
+
+    override fun onRemoveCourseFromFavorite(courseDto: CourseDto, index: Int) {
+        favoritesViewModel.removeFavoriteCourse(course = courseDto, index = index)
     }
 }

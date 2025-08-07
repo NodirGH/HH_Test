@@ -8,19 +8,27 @@ import app.market.data.home.HeadersModel
 import app.market.data.home.VacancyModel
 import app.market.data.local.AppPreferences
 import app.market.data.local.DisplayableItem
+import app.market.data.local.database.CoursesDao
+import app.market.data.remote.mapper.toCourseDto
+import app.market.data.remote.mapper.toCoursesDatabase
 import app.market.data.remote.service.HomeService
 import javax.inject.Inject
 
 interface MainRepository {
     suspend fun getAllData(): ArrayList<DisplayableItem>
     suspend fun getCourses(): ArrayList<DisplayableItem>
+    suspend fun addAllCourse(courses: List<CourseDto>)
     suspend fun login(code: String): Boolean
     suspend fun logout()
+    suspend fun getFavoriteCourses(): List<CourseDto>
+    suspend fun addFavoriteCourse(course: CourseDto)
+    suspend fun removeFavoriteCourse(course: CourseDto)
 }
 
 class MainRepositoryImpl @Inject constructor(
     private val service: HomeService,
-    private val preferences: AppPreferences
+    private val preferences: AppPreferences,
+    private val coursesDao: CoursesDao
 ) : MainRepository {
 
     override suspend fun getAllData(): ArrayList<DisplayableItem> {
@@ -66,24 +74,27 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCourses(): ArrayList<DisplayableItem> {
-        val data = service.readCoursesFromAssets()
-
-        val displayableItem = ArrayList<DisplayableItem>()
-        val courses = data?.courses?.map { course ->
-            CourseDto(
-                id = course.id ?: 0,
-                title = course.title ?: "",
-                text = course.text ?: "",
-                price = course.price ?: "",
-                rate = course.rate ?: "",
-                startDate = course.startDate ?: "",
-                hasLike = course.hasLike ?: false,
-                publishDate = course.publishDate ?: "",
-            )
+        if (!preferences.isCoursesAddedToDatabase) {
+            val data = service.readCoursesFromAssets()
+            addAllCourse(data?.courses?.map { it.toCourseDto() } ?: emptyList())
         }
 
-        displayableItem.add(AllCourseDto(courses ?: emptyList()))
+        val courses = coursesDao.getCourses()
+        val displayableItem = ArrayList<DisplayableItem>()
+        val mappedCourses = courses.map { it.toCourseDto() }
+        mappedCourses.forEach {
+            if (it.hasLike) {
+                addFavoriteCourse(it)
+            }
+        }
+
+        displayableItem.add(AllCourseDto(mappedCourses))
         return displayableItem
+    }
+
+    override suspend fun addAllCourse(courses: List<CourseDto>) {
+        coursesDao.addAllCourse(courses.map { it.toCoursesDatabase() })
+        preferences.isCoursesAddedToDatabase = true
     }
 
     override suspend fun login(code: String): Boolean {
@@ -93,5 +104,19 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun logout() {
         preferences.isUserRegister = false
+        preferences.isCoursesAddedToDatabase = false
+    }
+
+    override suspend fun getFavoriteCourses(): List<CourseDto> {
+        return coursesDao.getFavoriteCourses().map { it.toCourseDto() }
+    }
+
+    override suspend fun addFavoriteCourse(course: CourseDto) {
+        coursesDao.updateFavorite(course.id, true)
+    }
+
+    override suspend fun removeFavoriteCourse(course: CourseDto) {
+        coursesDao.removeCourse(course.toCoursesDatabase())
+        getFavoriteCourses()
     }
 }

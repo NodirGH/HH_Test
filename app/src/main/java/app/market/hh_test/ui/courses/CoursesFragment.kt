@@ -16,6 +16,7 @@ import app.market.hh_test.databinding.FragmentHomeBinding
 import app.market.hh_test.ui.adapters.CoursesAdapter
 import app.market.hh_test.ui.adapters.MainAdapter
 import app.market.hh_test.ui.adapters.VacanciesAdapter
+import app.market.hh_test.ui.favorite.FavoriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,6 +31,7 @@ class CoursesFragment : Fragment(), VacanciesAdapter.VacancyClickListener, Cours
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val coursesViewModel: CoursesViewModel by activityViewModels()
+    private val favoritesViewModel: FavoriteViewModel by activityViewModels()
     private lateinit var mainAdapter: MainAdapter
 
     override fun onCreateView(
@@ -77,5 +79,13 @@ class CoursesFragment : Fragment(), VacanciesAdapter.VacancyClickListener, Cours
 
     override fun onCourseClick(courseDto: CourseDto) {
         Toast.makeText(requireContext(), "Course clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onAddCourseToFavorite(courseDto: CourseDto) {
+        favoritesViewModel.addFavoriteCourse(course = courseDto)
+    }
+
+    override fun onRemoveCourseFromFavorite(courseDto: CourseDto, index: Int) {
+        favoritesViewModel.removeFavoriteCourse(course = courseDto, index = index)
     }
 }

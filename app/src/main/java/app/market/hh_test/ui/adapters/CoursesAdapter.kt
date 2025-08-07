@@ -20,6 +20,8 @@ class CoursesAdapter() : RecyclerView.Adapter<CoursesAdapter.CoursesViewHolder>(
 
     interface CourseClickListener {
         fun onCourseClick(courseDto: CourseDto)
+        fun onAddCourseToFavorite(courseDto: CourseDto)
+        fun onRemoveCourseFromFavorite(courseDto: CourseDto, index: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoursesViewHolder {
@@ -54,10 +56,15 @@ class CoursesAdapter() : RecyclerView.Adapter<CoursesAdapter.CoursesViewHolder>(
                 if (course.hasLike) {
                     binding.ivFavorite.setImageResource(R.drawable.ic_bookmark)
                     course.hasLike = false
+                    courseListener.onRemoveCourseFromFavorite(course, adapterPosition)
                 } else {
                     binding.ivFavorite.setImageResource(R.drawable.ic_bookmark_filled)
                     course.hasLike = true
+                    courseListener.onAddCourseToFavorite(course)
                 }
+            }
+
+            binding.root.setOnClickListener {
                 courseListener.onCourseClick(course)
             }
         }

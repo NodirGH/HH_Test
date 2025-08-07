@@ -13,4 +13,10 @@ class AppPreferences @Inject constructor(val context: Context) {
     set(value) {
         preferences.edit().putBoolean(::isUserRegister.name, value).apply()
     }
+
+    var isCoursesAddedToDatabase: Boolean
+        get() = preferences.getBoolean(::isCoursesAddedToDatabase.name, false)
+        set(value) {
+            preferences.edit().putBoolean(::isCoursesAddedToDatabase.name, value).apply()
+        }
 }
