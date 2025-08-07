@@ -1,26 +1,23 @@
 package app.market.data.repositories
 
 import app.market.data.home.AllCourseDto
-import app.market.data.home.AllHeadersModel
-import app.market.data.home.AllVacancyModel
 import app.market.data.home.CourseDto
-import app.market.data.home.HeadersModel
-import app.market.data.home.VacancyModel
 import app.market.data.local.AppPreferences
 import app.market.data.local.DisplayableItem
 import app.market.data.local.database.CoursesDao
 import app.market.data.remote.mapper.toCourseDto
 import app.market.data.remote.mapper.toCoursesDatabase
 import app.market.data.remote.service.HomeService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface MainRepository {
-    suspend fun getAllData(): ArrayList<DisplayableItem>
     suspend fun getCourses(): ArrayList<DisplayableItem>
     suspend fun addAllCourse(courses: List<CourseDto>)
     suspend fun login(code: String): Boolean
     suspend fun logout()
-    suspend fun getFavoriteCourses(): List<CourseDto>
+    suspend fun getFavoriteCourses(): Flow<List<CourseDto>>
     suspend fun addFavoriteCourse(course: CourseDto)
     suspend fun removeFavoriteCourse(course: CourseDto)
 }
@@ -30,48 +27,6 @@ class MainRepositoryImpl @Inject constructor(
     private val preferences: AppPreferences,
     private val coursesDao: CoursesDao
 ) : MainRepository {
-
-    override suspend fun getAllData(): ArrayList<DisplayableItem> {
-        val allData = service.readMockDataFromAssets()
-
-        val displayableItem = ArrayList<DisplayableItem>()
-        val vacancies = allData?.vacancies?.map { vacancy ->
-            VacancyModel(
-                id = vacancy.id ?: "",
-                lookingNumber = vacancy.lookingNumber ?: 0,
-                title = vacancy.title ?: "",
-                town = vacancy.address.town ?: "",
-                street = vacancy.address.street ?: "",
-                house = vacancy.address.house ?: "",
-                company = vacancy.company ?: "",
-                experiencePreviewText = vacancy.experience.previewText ?: "",
-                experienceText = vacancy.experience.text ?: "",
-                publishedDate = vacancy.publishedDate ?: "",
-                isFavorite = vacancy.isFavorite ?: false,
-                fullSalary = vacancy.salary.full ?: "",
-                shortSalary = vacancy.salary.short ?: "",
-                schedules = vacancy.schedules ?: emptyList(),
-                description = vacancy.description ?: "",
-                responsibilities = vacancy.responsibilities ?: "",
-                questions = vacancy.questions ?: emptyList(),
-                appliedNumber = vacancy.appliedNumber ?: 0
-            )
-        }
-
-        val header = allData?.offers?.map { offerResponse ->
-            HeadersModel(
-                id = offerResponse.id ?: "",
-                title = offerResponse.title ?: "",
-                link = offerResponse.link ?: "",
-                buttonText = offerResponse.button?.text ?: "",
-            )
-        }
-
-        displayableItem.add(AllHeadersModel(header ?: emptyList()))
-        displayableItem.add(AllVacancyModel(vacancies ?: emptyList()))
-
-        return displayableItem
-    }
 
     override suspend fun getCourses(): ArrayList<DisplayableItem> {
         if (!preferences.isCoursesAddedToDatabase) {
@@ -107,8 +62,8 @@ class MainRepositoryImpl @Inject constructor(
         preferences.isCoursesAddedToDatabase = false
     }
 
-    override suspend fun getFavoriteCourses(): List<CourseDto> {
-        return coursesDao.getFavoriteCourses().map { it.toCourseDto() }
+    override suspend fun getFavoriteCourses(): Flow<List<CourseDto>> {
+        return coursesDao.getFavoriteCourses().map { list -> list.map { it.toCourseDto() } }
     }
 
     override suspend fun addFavoriteCourse(course: CourseDto) {

@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CoursesDao {
@@ -22,7 +23,7 @@ interface CoursesDao {
     fun removeCourse(courses: Courses)
 
     @Query("SELECT * FROM courses WHERE hasLike = 1")
-    fun getFavoriteCourses(): List<Courses>
+    fun getFavoriteCourses(): Flow<List<Courses>>
 
     @Query("UPDATE courses SET hasLike = :isLiked WHERE id = :id")
     fun updateFavorite(id: Int, isLiked: Boolean): Unit
