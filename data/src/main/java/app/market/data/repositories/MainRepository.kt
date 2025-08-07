@@ -19,7 +19,7 @@ interface MainRepository {
     suspend fun logout()
     suspend fun getFavoriteCourses(): Flow<List<CourseDto>>
     suspend fun addFavoriteCourse(course: CourseDto)
-    suspend fun removeFavoriteCourse(course: CourseDto)
+    suspend fun removeFavoriteCourse(id: Int)
 }
 
 class MainRepositoryImpl @Inject constructor(
@@ -70,8 +70,8 @@ class MainRepositoryImpl @Inject constructor(
         coursesDao.updateFavorite(course.id, true)
     }
 
-    override suspend fun removeFavoriteCourse(course: CourseDto) {
-        coursesDao.removeCourse(course.toCoursesDatabase())
+    override suspend fun removeFavoriteCourse(id: Int) {
+        coursesDao.updateFavorite(id = id, false)
         getFavoriteCourses()
     }
 }

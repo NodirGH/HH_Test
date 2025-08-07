@@ -68,6 +68,6 @@ class FavoriteFragment : Fragment(), CoursesAdapter.CourseClickListener {
     }
 
     override fun onRemoveCourseFromFavorite(courseDto: CourseDto, index: Int) {
-        favoritesViewModel.removeFavoriteCourse(course = courseDto, index = index)
+        favoritesViewModel.removeFavoriteCourse(id = courseDto.id)
     }
 }

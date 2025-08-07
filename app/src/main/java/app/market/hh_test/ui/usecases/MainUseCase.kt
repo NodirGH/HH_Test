@@ -9,7 +9,7 @@ import javax.inject.Inject
 interface MainUseCase {
     suspend fun getCourses(): ArrayList<DisplayableItem>
     suspend fun addFavoriteCourse(course: CourseDto)
-    suspend fun removeFavoriteCourse(course: CourseDto)
+    suspend fun removeFavoriteCourse(id: Int)
     suspend fun getFavoriteCourses(): Flow<List<CourseDto>>
 }
 
@@ -24,8 +24,8 @@ class MainUseCaseImpl @Inject constructor(private val mainRepository: MainReposi
         mainRepository.addFavoriteCourse(course)
     }
 
-    override suspend fun removeFavoriteCourse(course: CourseDto) {
-        mainRepository.removeFavoriteCourse(course = course)
+    override suspend fun removeFavoriteCourse(id: Int) {
+        mainRepository.removeFavoriteCourse(id = id)
     }
 
     override suspend fun getFavoriteCourses(): Flow<List<CourseDto>> {

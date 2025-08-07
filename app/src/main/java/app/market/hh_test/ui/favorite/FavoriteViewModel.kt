@@ -32,9 +32,9 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun removeFavoriteCourse(course: CourseDto, index: Int) {
+    fun removeFavoriteCourse(id: Int) {
         vmScope.launch {
-            mainUseCase.removeFavoriteCourse(course = course)
+            mainUseCase.removeFavoriteCourse(id = id)
         }
     }
 }
