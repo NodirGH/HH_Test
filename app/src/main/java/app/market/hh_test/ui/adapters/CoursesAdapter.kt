@@ -22,6 +22,7 @@ class CoursesAdapter() : RecyclerView.Adapter<CoursesAdapter.CoursesViewHolder>(
         fun onCourseClick(courseDto: CourseDto)
         fun onAddCourseToFavorite(courseDto: CourseDto)
         fun onRemoveCourseFromFavorite(courseDto: CourseDto, index: Int)
+        fun onSortCourses()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoursesViewHolder {

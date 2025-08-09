@@ -28,4 +28,6 @@ interface CoursesDao {
     @Query("UPDATE courses SET hasLike = :isLiked WHERE id = :id")
     fun updateFavorite(id: Int, isLiked: Boolean): Unit
 
+    @Query("SELECT * FROM courses ORDER BY publishDate DESC")
+    fun getCoursesByPublishDate(): List<Courses>
 }

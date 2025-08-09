@@ -7,9 +7,9 @@ import app.market.hh_test.ui.adapters.adapter_delegate.vacanciesAdapterDelegate
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
 
-class MainAdapter(vacanciesAdapter: VacanciesAdapter, coursesAdapter: CoursesAdapter) :
+class MainAdapter(vacanciesAdapter: VacanciesAdapter, coursesAdapter: CoursesAdapter, listener: CoursesAdapter.CourseClickListener) :
     ListDelegationAdapter<List<DisplayableItem>>(
         headerAdapterDelegate(),
         vacanciesAdapterDelegate(vacanciesAdapter),
-        coursesAdapterDelegate(coursesAdapter)
+        coursesAdapterDelegate(coursesAdapter, listener = listener)
     )

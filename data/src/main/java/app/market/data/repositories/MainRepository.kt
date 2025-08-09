@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface MainRepository {
-    suspend fun getCourses(): ArrayList<DisplayableItem>
+    suspend fun getCourses(isSorting: Boolean): ArrayList<DisplayableItem>
     suspend fun addAllCourse(courses: List<CourseDto>)
     suspend fun login(code: String): Boolean
     suspend fun logout()
@@ -28,13 +28,13 @@ class MainRepositoryImpl @Inject constructor(
     private val coursesDao: CoursesDao
 ) : MainRepository {
 
-    override suspend fun getCourses(): ArrayList<DisplayableItem> {
+    override suspend fun getCourses(isSorting: Boolean): ArrayList<DisplayableItem> {
         if (!preferences.isCoursesAddedToDatabase) {
             val data = service.readCoursesFromAssets()
             addAllCourse(data?.courses?.map { it.toCourseDto() } ?: emptyList())
         }
 
-        val courses = coursesDao.getCourses()
+        val courses = if (isSorting) coursesDao.getCoursesByPublishDate() else coursesDao.getCourses()
         val displayableItem = ArrayList<DisplayableItem>()
         val mappedCourses = courses.map { it.toCourseDto() }
         mappedCourses.forEach {

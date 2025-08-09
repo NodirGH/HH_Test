@@ -70,4 +70,8 @@ class FavoriteFragment : Fragment(), CoursesAdapter.CourseClickListener {
     override fun onRemoveCourseFromFavorite(courseDto: CourseDto, index: Int) {
         favoritesViewModel.removeFavoriteCourse(id = courseDto.id)
     }
+
+    override fun onSortCourses() {
+
+    }
 }

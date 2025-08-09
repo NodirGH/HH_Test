@@ -12,6 +12,7 @@ import app.market.data.home.AllVacancyModel
 import app.market.hh_test.databinding.ItemCourseWithTitleBinding
 import app.market.hh_test.databinding.ItemFavoriteCourseBinding
 import app.market.hh_test.ui.adapters.CoursesAdapter
+import app.market.hh_test.ui.adapters.CoursesAdapter.CourseClickListener
 import app.market.hh_test.ui.adapters.HeaderAdapter
 import app.market.hh_test.ui.adapters.VacanciesAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
@@ -62,7 +63,7 @@ fun vacanciesAdapterDelegate(vacanciesAdapter: VacanciesAdapter) =
         }
     }
 
-fun coursesAdapterDelegate(coursesAdapter: CoursesAdapter) =
+fun coursesAdapterDelegate(coursesAdapter: CoursesAdapter, listener: CourseClickListener) =
     adapterDelegateViewBinding<AllCourseDto, DisplayableItem, ItemCourseWithTitleBinding>(
         { layoutInflater, root ->
             ItemCourseWithTitleBinding.inflate(
@@ -73,12 +74,16 @@ fun coursesAdapterDelegate(coursesAdapter: CoursesAdapter) =
         }
     ) {
         bind {
+            val courseListener: CourseClickListener = listener
             binding.rvCourses.apply {
                 adapter = coursesAdapter
                 layoutManager = LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
                 itemAnimator = DefaultItemAnimator()
             }
             coursesAdapter.setItems(item.courses)
+            binding.tvSortByPublishDate.setOnClickListener {
+                courseListener.onSortCourses()
+            }
         }
     }
 

@@ -17,6 +17,7 @@ class CoursesViewModel @Inject constructor(
 
     private val _displayableItem = MutableLiveData<List<DisplayableItem>>()
     val displayableItem: LiveData<List<DisplayableItem>> = _displayableItem
+    var isCoursesSorted = false
 
     init {
         getCourses()
@@ -24,7 +25,7 @@ class CoursesViewModel @Inject constructor(
 
     fun getCourses() {
         vmScope.launch {
-            val courses = mainUseCase.getCourses()
+            val courses = mainUseCase.getCourses(isSorting = isCoursesSorted)
             _displayableItem.postValue(courses)
         }
     }

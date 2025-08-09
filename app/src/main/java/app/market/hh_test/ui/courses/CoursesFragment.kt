@@ -46,7 +46,7 @@ class CoursesFragment : Fragment(), VacanciesAdapter.VacancyClickListener, Cours
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainAdapter = MainAdapter(vacanciesAdapter, coursesAdapter)
+        mainAdapter = MainAdapter(vacanciesAdapter, coursesAdapter, this)
         coursesViewModel.getCourses()
         vacanciesAdapter.setOnVacancyCLickListener(this)
         coursesAdapter.setOnCourseCLickListener(this)
@@ -87,5 +87,10 @@ class CoursesFragment : Fragment(), VacanciesAdapter.VacancyClickListener, Cours
 
     override fun onRemoveCourseFromFavorite(courseDto: CourseDto, index: Int) {
         favoritesViewModel.removeFavoriteCourse(id = courseDto.id)
+    }
+
+    override fun onSortCourses() {
+        coursesViewModel.isCoursesSorted = true
+        coursesViewModel.getCourses()
     }
 }

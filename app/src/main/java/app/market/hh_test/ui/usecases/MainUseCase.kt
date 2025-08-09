@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface MainUseCase {
-    suspend fun getCourses(): ArrayList<DisplayableItem>
+    suspend fun getCourses(isSorting: Boolean = false): ArrayList<DisplayableItem>
     suspend fun addFavoriteCourse(course: CourseDto)
     suspend fun removeFavoriteCourse(id: Int)
     suspend fun getFavoriteCourses(): Flow<List<CourseDto>>
@@ -16,8 +16,8 @@ interface MainUseCase {
 class MainUseCaseImpl @Inject constructor(private val mainRepository: MainRepository) :
     MainUseCase {
 
-    override suspend fun getCourses(): ArrayList<DisplayableItem> {
-        return mainRepository.getCourses()
+    override suspend fun getCourses(isSorting: Boolean): ArrayList<DisplayableItem> {
+        return mainRepository.getCourses(isSorting = isSorting)
     }
 
     override suspend fun addFavoriteCourse(course: CourseDto) {
