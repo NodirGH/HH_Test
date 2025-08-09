@@ -11,20 +11,15 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.market.data.home.CourseDto
-import app.market.data.home.VacancyModel
 import app.market.hh_test.databinding.FragmentHomeBinding
 import app.market.hh_test.ui.adapters.CoursesAdapter
 import app.market.hh_test.ui.adapters.MainAdapter
-import app.market.hh_test.ui.adapters.VacanciesAdapter
 import app.market.hh_test.ui.favorite.FavoriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CoursesFragment : Fragment(), VacanciesAdapter.VacancyClickListener, CoursesAdapter.CourseClickListener {
-
-    @Inject
-    lateinit var vacanciesAdapter: VacanciesAdapter
+class CoursesFragment : Fragment(), CoursesAdapter.CourseClickListener {
 
     @Inject
     lateinit var coursesAdapter: CoursesAdapter
@@ -46,9 +41,8 @@ class CoursesFragment : Fragment(), VacanciesAdapter.VacancyClickListener, Cours
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainAdapter = MainAdapter(vacanciesAdapter, coursesAdapter, this)
+        mainAdapter = MainAdapter(coursesAdapter, this)
         coursesViewModel.getCourses()
-        vacanciesAdapter.setOnVacancyCLickListener(this)
         coursesAdapter.setOnCourseCLickListener(this)
 
         binding.rvHome.apply {
@@ -70,15 +64,9 @@ class CoursesFragment : Fragment(), VacanciesAdapter.VacancyClickListener, Cours
         _binding = null
     }
 
-    override fun onVacancyClick(vacancyModel: VacancyModel) {
-        //TODO: Navigate to DetailedVacancyFragment
-//        val action =
-//            HomeFragmentDirections.actionHomeFragmentToDetailedVacancyFragment(vacancyModel)
-//        findNavController().navigate(action)
-    }
-
     override fun onCourseClick(courseDto: CourseDto) {
         Toast.makeText(requireContext(), "Course clicked", Toast.LENGTH_SHORT).show()
+        // As it is not required, I did not apply navigation
     }
 
     override fun onAddCourseToFavorite(courseDto: CourseDto) {

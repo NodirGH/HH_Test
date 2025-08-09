@@ -60,6 +60,7 @@ class FavoriteFragment : Fragment(), CoursesAdapter.CourseClickListener {
     }
 
     override fun onCourseClick(courseDto: CourseDto) {
+        //As it is not required, I did not apply navigation, and just used Toast message with hardcode
         Toast.makeText(requireContext(), "Course clicked", Toast.LENGTH_SHORT).show()
     }
 
@@ -71,7 +72,5 @@ class FavoriteFragment : Fragment(), CoursesAdapter.CourseClickListener {
         favoritesViewModel.removeFavoriteCourse(id = courseDto.id)
     }
 
-    override fun onSortCourses() {
-
-    }
+    override fun onSortCourses() {}
 }

@@ -12,7 +12,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CoursesViewModel @Inject constructor(
     private val mainUseCase: MainUseCase
-
 ) : BaseViewModel() {
 
     private val _displayableItem = MutableLiveData<List<DisplayableItem>>()
