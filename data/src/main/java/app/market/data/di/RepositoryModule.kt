@@ -1,6 +1,7 @@
 package app.market.data.di
 
 import app.market.data.local.AppPreferences
+import app.market.data.local.database.CoursesDao
 import app.market.data.remote.service.HomeService
 import app.market.data.repositories.MainRepository
 import app.market.data.repositories.MainRepositoryImpl
@@ -18,8 +19,10 @@ object RepositoryModule {
     @Provides
     fun provideHomeRepository(
      service: HomeService,
-     preferences: AppPreferences
+     preferences: AppPreferences,
+     coursesDao: CoursesDao
     ): MainRepository {
-        return MainRepositoryImpl(service, preferences)
+        return MainRepositoryImpl(service, preferences, coursesDao
+        )
     }
  }
