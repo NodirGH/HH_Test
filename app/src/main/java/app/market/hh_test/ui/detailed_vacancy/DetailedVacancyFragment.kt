@@ -14,5 +14,6 @@ class DetailedVacancyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_detailed_vacancy, container, false)
+        //As this page is not necessary I did not apply navigation
     }
 }

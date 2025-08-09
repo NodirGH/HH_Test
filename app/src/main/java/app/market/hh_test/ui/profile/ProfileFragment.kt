@@ -30,7 +30,7 @@ class ProfileFragment : Fragment() {
             profileViewModel.logout()
             findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
-
+        //Profile page is not required, so I did not draw UI. And I only use Logout button to check login and logout works
         return root
     }
 

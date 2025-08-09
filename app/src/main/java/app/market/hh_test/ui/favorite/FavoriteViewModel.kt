@@ -1,13 +1,40 @@
 package app.market.hh_test.ui.favorite
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import app.market.data.home.CourseDto
+import app.market.hh_test.base.BaseViewModel
+import app.market.hh_test.ui.usecases.MainUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FavoriteViewModel : ViewModel() {
+@HiltViewModel
+class FavoriteViewModel @Inject constructor(
+    private val mainUseCase: MainUseCase,
+) : BaseViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+    private val _favorites = MutableStateFlow<List<CourseDto>>(emptyList())
+    val favorites: StateFlow<List<CourseDto>> = _favorites
+
+    init {
+        viewModelScope.launch {
+            mainUseCase.getFavoriteCourses().collect {
+                _favorites.value = it
+            }
+        }
     }
-    val text: LiveData<String> = _text
+
+    fun addFavoriteCourse(course: CourseDto) {
+        vmScope.launch {
+            mainUseCase.addFavoriteCourse(course = course)
+        }
+    }
+
+    fun removeFavoriteCourse(id: Int) {
+        vmScope.launch {
+            mainUseCase.removeFavoriteCourse(id = id)
+        }
+    }
 }
